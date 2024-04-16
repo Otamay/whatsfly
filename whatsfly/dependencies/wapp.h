@@ -21,7 +21,7 @@ extern "C" {
 #endif
 
   extern int NewWhatsAppClientWrapper(char* c_phone_number, char* c_media_path, ptr_to_pyfunc fn_disconnect_callback, ptr_to_pyfunc_str fn_event_callback);
-  extern void ConnectWrapper(int id);
+  extern void ConnectWrapper(int id, char* dbPath);
   extern void DisconnectWrapper(int id);
   extern void MessageThreadWrapper(int id);
   extern int SendMessageWrapper(int id, char* c_number, char* c_msg, bool is_group);

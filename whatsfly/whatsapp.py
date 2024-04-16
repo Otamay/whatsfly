@@ -160,19 +160,19 @@ Basic WhatsApp features that I will developed soon:
 
 
 class WhatsApp(object):
-    def connect(self):
-        connect_wrapper(self.c_WhatsAppClientId)
+    def connect(self, db_path: str = "whatsapp/wapp.db"):
+        connect_wrapper(self.c_WhatsAppClientId, db_path.encode())
 
     def disconnect(self):
         disconnect_wrapper(self.c_WhatsAppClientId)
 
-    def runMessageThread(self):
+    def run_message_thread(self):
         message_thread_wrapper(self.c_WhatsAppClientId)
 
-    def sendMessage(self, phone: str, message: str, group: bool = False):
+    def send_message(self, phone: str, message: str, group: bool = False):
         ret = send_message_wrapper(self.c_WhatsAppClientId, phone.encode(), message.encode(), group)
     
-    def sendImage(self, phone: str, image_path: str, caption: str = "", group: bool = False):
+    def send_image(self, phone: str, image_path: str, caption: str = "", group: bool = False):
         send_image_wrapper(self.c_WhatsAppClientId, phone.encode(), image_path.encode(), caption.encode(), group)
 
     def __init__(self, phone_number: str = "", media_path: str = "", user: Optional[str] = None, machine: str = "mac", browser: str = "safari", on_event = None, on_disconnect = None):

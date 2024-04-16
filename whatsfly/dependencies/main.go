@@ -78,9 +78,11 @@ func NewWhatsAppClient(phoneNumber string, mediaPath string, fn_disconnect_callb
     }
 }
 
-func (w *WhatsAppClient) Connect() {
+func (w *WhatsAppClient) Connect(dbPath string) {
     // Set the path for the database file
-    dbPath := "whatsapp/wapp.db"
+    if len(dbPath) == 0 {
+        dbPath = "whatsapp/wapp.db"
+    }
 
     // Set Browser
     store.DeviceProps.PlatformType = waProto.DeviceProps_SAFARI.Enum()
@@ -131,10 +133,10 @@ func (w *WhatsAppClient) Connect() {
                         if err != nil {
                             panic(err)
                         }
-                        w.eventQueue.Enqueue("{\"eventType\":\"linkCode\", \"code\": \""+linkingCode+"\"}")
+                        w.addEventToQueue("{\"eventType\":\"linkCode\", \"code\": \""+linkingCode+"\"}")
                         fmt.Println("Linking code:", linkingCode)
                     }
-                    w.eventQueue.Enqueue("{\"eventType\":\"qrCode\", \"code\": \""+evt.Code+"\"}")
+                    w.addEventToQueue("{\"eventType\":\"qrCode\", \"code\": \""+evt.Code+"\"}")
                     qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
                     fmt.Println("QR code:", evt.Code)
                 } else {
@@ -522,9 +524,11 @@ func NewWhatsAppClientWrapper(c_phone_number *C.char, c_media_path *C.char, fn_d
 }
 
 //export ConnectWrapper
-func ConnectWrapper(id C.int){
+func ConnectWrapper(id C.int, c_db_path *C.char){
+    dbPath := C.GoString(c_db_path)
+
     w := handles[int(id)]
-    w.Connect()
+    w.Connect(dbPath)
 }
 
 //export DisconnectWrapper
@@ -562,4 +566,3 @@ func SendImageWrapper(id C.int, c_phone_number *C.char, c_image_path *C.char, c_
 
 func main() {
 }
-

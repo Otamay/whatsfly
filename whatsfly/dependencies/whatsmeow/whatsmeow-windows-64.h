@@ -79,7 +79,7 @@ extern "C" {
 #endif
 
 extern __declspec(dllexport) int NewWhatsAppClientWrapper(char* c_phone_number, char* c_media_path, ptr_to_pyfunc fn_disconnect_callback, ptr_to_pyfunc_str fn_event_callback);
-extern __declspec(dllexport) void ConnectWrapper(int id);
+extern __declspec(dllexport) void ConnectWrapper(int id, char* c_db_path);
 extern __declspec(dllexport) void DisconnectWrapper(int id);
 extern __declspec(dllexport) void MessageThreadWrapper(int id);
 extern __declspec(dllexport) int SendMessageWrapper(int id, char* c_phone_number, char* c_message, _Bool c_is_group);
